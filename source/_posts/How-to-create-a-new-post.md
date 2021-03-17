@@ -1,12 +1,10 @@
 ---
-title: 怎么在 `Hexo` 中创建一篇新的文章
+title: 怎么在 Hexo 中创建一篇新的文章
 tags: hexo create-post
 date: 2019-05-17 17:36:10
 ---
 
-## 怎么在 `Hexo` 中创建一篇新的文章
-
-### 创建一篇新的文章
+### 安装 hexo 命令
 
 创建一篇新的文章需要使用 `hexo` 命令， `hexo` 命令有两种安装方式
 
@@ -29,6 +27,12 @@ Arguments:
     "create" : "./node_modules/hexo/bin/hexo new"
   },
 ```
-这是可以使用 `npm run create -- [layout] <title>` 来创建新的文章
 
-创建完成后会发现 \<title\>.md 创建在 source/_\<layout\> 目录下面
+### 创建新的文章
+通常如果要发布一个新的文章，可以通过如下步骤
+1. 使用 `hexo new draft <title>` 来生成一个 draft
+2. 编辑 draft, 通过 `hexo server --draft` 来预览
+3. 编辑完成之后使用 `hexo publish post <title>` 来将 draft 发布到 post 下
+4. 使用 `hexo deplpy` 来发布最新的页面
+
+详细的说明可以可以在[这里](https://hexo.io/docs/writing)看到具体的官方文档
