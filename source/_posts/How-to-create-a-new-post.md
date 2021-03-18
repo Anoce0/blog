@@ -36,3 +36,6 @@ Arguments:
 4. 使用 `hexo deplpy` 来发布最新的页面 (通常这个新的页面可能需要等几分钟才能生效)
 
 详细的说明可以可以在[这里](https://hexo.io/docs/writing)看到具体的官方文档
+
+### 关于 markdown 语法
+- 语法速查 - [Markdown 指南中文版](https://www.markdown.xyz/basic-syntax)
