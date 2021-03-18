@@ -1,6 +1,6 @@
 ---
 title: 怎么在 Hexo 中创建一篇新的文章
-tags: hexo create-post
+tags: [hexo]
 date: 2019-05-17 17:36:10
 ---
 
