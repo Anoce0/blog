@@ -1,11 +1,9 @@
 ---
 title: Javascript 中 Promise 与 setTimeout 的执行顺序
-tags:
-  - javascript
-  - eventloop
-date: 2021-03-18 21:07:09
+tags: 
+ - javascript
+ - eventloop
 ---
-
 
 考虑以下这种情况, 哪条语句会先打印？
 
@@ -49,6 +47,41 @@ console.log("main");
  5. 这时当前脚本执行完毕，JS 引擎闲置，由于微任务队列非空，优先执行微任务 `console.log("promise");`, `"promise"` 被打印出来
  6. 这是微任务队列为空，JS 引擎去执行 宏任务队列中的任务 `console.log("timeout");`， `"timeout"` 被打印出来
 
- > 参考:  
+
+OK, 到目前，我们搞清楚了setTimeout  与 Promise 的执行顺序是由宏任务与微任务队列的优先级决定的，那么我们在其中考虑一个新的场景
+```
+document.body.style = 'background:red';
+
+setTimeout(()=> {
+    document.body.style = 'background:black';
+})
+
+Promise.resolve().then(()=> {
+    document.body.style = 'background:white';
+})
+```
+请问目前页面的颜色改变了几次？
+
+要回答这个问题，我们比如引入一个新的知识点**页面渲染**， 我们知道，当 JS 引擎被阻塞是，页面渲染是会被暂停的，只有 JS 引擎空闲时，页面才会完成渲染，这通常也是我们页面优化的一个方面：尽量避免 JS 引擎被长时间占据，这回导致页面是去反应。
+> 实际上页面渲染是GUI渲染线程来控制的，二这个线程与 JS 引擎线程互斥，导致了这种现象。  
+> 除此之外，浏览器里的线程一共有一下几种  
+    - 扩展GUI渲染线程  
+    - JS引擎线程   
+    - 事件触发线程  
+    - 定时触发器线程    
+    - 异步http请求线程  
+
+在我们目前的这个例子里, 这里出现了三个任务：
+ - 主程序 - macrotask
+ - timeout 任务 - macrotask
+ - promise 任务 - microtask
+通过之前第一个问题，我们知道这三个任务的执行顺序是： 主程序 -> promise 任务 -> timeout 任务  
+
+我们在这里需要判断 UI 渲染会发生在哪一个阶段，实际上，UI 渲染也是一个 macrotask, 所以 UI 渲染会发生在 promise 任务之后，接下来要判断的问题是 UI 渲染任务与 timeout 任务的顺序问题， 这里按照标准 预期的顺序应该是 `'background:white'` 开始 rendering ,然后 setTimeout , `'background:black'` 开始 rendering, 但是实际如果再浏览器中测试，可能看不到 `'background:white'` 的 rendering 过程。
+
+> 参考:  
 > - *[事件循环：微任务和宏任务](https://zh.javascript.info/event-loop)*  
 > - *[微任务（Microtask）](https://zh.javascript.info/microtask-queue)*  
+> - *[MDN - EventLoop](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop)*
+> - *[stackoverflow-why-is-settimeoutfn-0-sometimes-useful](https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful)*
+> - *[为什么js会阻塞页面渲染？](https://lqqjohnny.github.io/2018/07/24/%E4%B8%BA%E4%BB%80%E4%B9%88js%E4%BC%9A%E9%98%BB%E5%A1%9E%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%EF%BC%9F/)*
