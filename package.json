@@ -16,5 +16,11 @@
     "hexo-renderer-marked": "^4.0.0",
     "hexo-renderer-stylus": "^2.0.1",
     "hexo-server": "^2.0.0"
+  },
+  "scripts": {
+    "draft": "yarn hexo new draft",
+    "server": "yarn hexo server --draft",
+    "publish": "yarn hexo publish",
+    "deploy": "yarn hexo clean && yarn hexo deploy"
   }
 }

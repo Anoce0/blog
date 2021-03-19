@@ -33,7 +33,7 @@ Arguments:
 1. 使用 `hexo new draft <title>` 来生成一个 draft
 2. 编辑 draft, 通过 `hexo server --draft` 来预览
 3. 编辑完成之后使用 `hexo publish post <title>` 来将 draft 发布到 post 下
-4. 使用 `hexo deplpy` 来发布最新的页面 (通常这个新的页面可能需要等几分钟才能生效)
+4. 使用 `hexo clean && hexo deplpy` 来发布最新的页面 (通常这个新的页面可能需要等几分钟才能生效)
 
 详细的说明可以可以在[这里](https://hexo.io/docs/writing)看到具体的官方文档
 
