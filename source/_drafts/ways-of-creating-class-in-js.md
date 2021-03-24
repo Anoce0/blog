@@ -8,7 +8,7 @@ tags:
 在经典的面向对象语言中，对象是指数据和在这些数据上进行的操作的集合。与 C++ 和 Java 不同，JavaScript 是一种基于原型的编程语言，并没有 class 语句，而是把函数用作类, 定义对象的方式与其他语言有很多不同.
 
 ### 1. 通过方法创造并返回对象
-例如,我们希望得到一个一下的数据和操作的集合:  
+例如,我们希望得到一个以下的数据和操作的集合:  
 ``` javascript
 function makePerson(first, last) {
     return {
@@ -90,7 +90,6 @@ window.fullName // function
 ```
 好在为了解决这种问题, javascript 提供了 `new` 关键字,帮我们正确的从函数初始化一个对象,正确绑定并返回 `this`
 ```javascript
-
 function Person(first, last) {
     this.first = first;
     this.last = last;
@@ -157,6 +156,9 @@ Person.prototype.firstNameCaps = function() {
 s.firstNameCaps(); // SIMON
 ```
 
-扩展, 以上我们简单聊了下 Javascript 创建对象的方法,和其中的原理, 由于 JS 是基于原型链的特性,JS 的集成机制也与其他面向对象的语言有很多不同,具体可以参考这个文档: [MDN - 继承与原型链](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)
+#### 扩展 
+以上我们简单聊了下 Javascript 创建对象的方法,和其中的原理, 由于 JS 是基于原型链的特性,JS 的继承机制也与其他面向对象的语言有很多不同,具体可以参考这个文档: [MDN - 继承与原型链](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)
+
+
 > Reference:
 > - *[MDN - A_re-introduction_to_JavaScript#自定义对象](hhttps://developer.mozilla.org/zh-CN/docs/Web/JavaScript/A_re-introduction_to_JavaScript#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1)*
