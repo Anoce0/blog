@@ -96,6 +96,19 @@ function sayHi() {
 }
 sayHi();
 ```
+
+> 其实这种声明提升作用在定义 function 的时候也会出现,例如
+> ```javascript
+> foo() // print foo
+> function foo() {console.log('foo')} 
+> ```
+> 是可以正常运行的
+> 但是以下这种不行
+> ```javascript
+> foo() // Uncaught ReferenceError
+> const foo = function() {console.log('foo')} 
+> ```
+
 #### 4. 全局声明
 
 var 在全局声明是会绑定成全局属性

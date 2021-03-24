@@ -85,3 +85,4 @@ Promise.resolve().then(()=> {
 > - *[MDN - EventLoop](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop)*
 > - *[stackoverflow-why-is-settimeoutfn-0-sometimes-useful](https://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful)*
 > - *[为什么js会阻塞页面渲染？](https://lqqjohnny.github.io/2018/07/24/%E4%B8%BA%E4%BB%80%E4%B9%88js%E4%BC%9A%E9%98%BB%E5%A1%9E%E9%A1%B5%E9%9D%A2%E6%B8%B2%E6%9F%93%EF%BC%9F/)*
+> - *[从浏览器多进程到JS单线程](https://www.jianshu.com/p/117d26a33610)*

@@ -20,7 +20,7 @@
   "scripts": {
     "draft": "yarn hexo new draft",
     "server": "yarn hexo server --draft",
-    "publish": "yarn hexo publish",
+    "publishs": "yarn hexo publish",
     "deploy": "yarn hexo clean && yarn hexo deploy"
   }
 }
