@@ -51,9 +51,9 @@ const set = new Set([1, 2, 3]);
 
 它跟 `entry` 选项的主要区别在于
 
-1.  `usage` 不需要在项目开头显式地添加 `import "core-js/stable";`
-2.  `usage` 会在文件的作用域内添加被使用到的 polyfill, 而 `entry` 会在项目入口处添加
-3.  `entry` 会根据目标环境(例如 ie11) 来添加所有的 polyfill, 而 `usage` 会检查被使用到的 polyfill
+1. `usage` 不需要在项目开头显式地添加 `import "core-js/stable";`
+2. `usage` 会在文件的作用域内添加被使用到的 polyfill, 而 `entry` 会在项目入口处添加
+3. `entry` 会根据目标环境(例如 ie11) 来添加所有的 polyfill, 而 `usage` 会检查被使用到的 polyfill
 
 ## 3. @babel/plugin-transform-runtime plugin
 
