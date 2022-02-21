@@ -1,6 +1,6 @@
 ---
 title: ring-buffer 环形缓冲区
-date: 2021-03-17 23:08:07
+date: 2022-03-17 23:08:07
 tags: 
     - ios
     - tcp/ip
@@ -14,9 +14,9 @@ tags:
 
 ## 什么是环形缓冲区以及其实现
 
-环形缓冲区可以参考 Wikipedia 介绍页面的[这张图](https://upload.wikimedia.org/wikipedia/commons/f/fd/Circular_Buffer_Animation.gif)
-实际上是一个数组, 使用两个指针分别用于写入和读取, 指正移动到数组末尾后, 就会跳到数组的起始位置进行循环.
-具体解释如下:
+环形缓冲区可以参考 Wikipedia 介绍页面的[这张图示](https://upload.wikimedia.org/wikipedia/commons/f/fd/Circular_Buffer_Animation.gif)
+它实际上是一个数组, 使用两个指针分别用于写入和读取, 指正移动到数组末尾后, 就会跳到数组的起始位置进行循环, 实际缓冲的数据存在于 tail 到 head 之间的区域之内
+具体流程如下:
 初始化一个数组 A, 数组长度 length 最大缓冲长度, 设置两个指针分别是  head 和 tail 指向数组开头
 
 - 写入数据时:
@@ -26,12 +26,77 @@ tags:
 - 读取数据时:
   - 从 tail 指正所在位置往后读取, 读取完成后将 tail 指正指向到最后读取位置的下一位
   - 当读取到数组末尾时, 将 tail 指针移动到数组开头继续读取
-  - 当读取到 head 指针所在位置是, 表示读取完毕, 停止读取
+  - 当读取到 head 指针所在位置时, 表示读取完毕, 停止读取
 
 具体实现代码如下
 
-```javascript
-// TODO: add code sample
+```c
+int BUFFER_LENGTH = 1024;
+
+byte*  pBuffer; // circuler buffer 
+byte*  pBufferEnd; // circular buffer end
+byte*  pHead; // head pointer
+byte*  pTail; // tail pointer
+
+-(void)alloc_cir_buffer() 
+{
+    pBuffer =  host_malloc(BUFFER_LENGTH);
+    pbufferEnd = pBuffer + BUFFER_LENGTH;
+    pHead = pTail = pBuffer;
+}
+-(void)delloc_cir_buffer()
+{
+    free(pBuffer);
+}
+
+-(int)buffer_length() // 计算 buffer 已经占用的长度
+{
+    if(pHead < pTail) 
+    {
+        return (pBufferEnd - pTail) + (pBufferHead - pBuffer);
+    } else 
+    {
+        return pHead - pTail;
+    }
+}
+
+-(void)read_cir_buffer(&readBuffer, length, &outLength)
+{
+    int readLenth = MIN(length, buffer_length());
+    *outLength = readLenth;
+    if(pTail + readLength <= pBufferEnd) 
+    {   
+        memcpy(readBuffer, pBuffer, readLenth);
+        pTail += readLenth;
+    } else 
+    {   // 数据区间跨国了 bufferEnd
+        int part1 = pBufferEnd - pTail;
+        int part2 = readLenth = part1;
+        memcpy(readBuffer, tail, part1);
+        memcpy(readBuffer + part1, pBuffer, part2);
+        pTail = pBbufer + part2;
+    }
+}
+
+-(int)write_cir_buffer(&writeBuffer, length)
+{
+    int freeLength = pBufferEnd - pBuffer - buffer_length();
+    if(freeLenth < lenth) {
+        return CLIENT_ERROR_BUFFER_FULL;
+    }
+    if(pHead + freeLength <= pBufferEnd)
+    {
+        memcpy(pHead, *writeBuffer, length);
+        pHead += length
+    } else 
+    {   // 写入区间跨国了 bufferEnd
+        int part1 = pBufferEnd - pHead;
+        int part2 = length - part1;
+        memcpy(*writeBuffer, pHead, part1);
+        memcpy(*writeBuffer + part1, pBuffer, part2);
+        pHead = pBuffer + part2;
+    }
+}
 ```
 
 ## 环形缓冲区的优势
