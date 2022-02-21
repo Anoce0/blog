@@ -66,14 +66,14 @@ byte*  pTail; // tail pointer
     *outLength = readLenth;
     if(pTail + readLength <= pBufferEnd) 
     {   
-        memcpy(readBuffer, pBuffer, readLenth);
+        memcpy(readBuffer, tail, readLenth);
         pTail += readLenth;
     } else 
-    {   // 数据区间跨国了 bufferEnd
+    {   // 数据区间跨过了 bufferEnd
         int part1 = pBufferEnd - pTail;
         int part2 = readLenth = part1;
-        memcpy(readBuffer, tail, part1);
-        memcpy(readBuffer + part1, pBuffer, part2);
+        memcpy(*readBuffer, tail, part1);
+        memcpy(*readBuffer + part1, pBuffer, part2);
         pTail = pBbufer + part2;
     }
 }
@@ -89,7 +89,7 @@ byte*  pTail; // tail pointer
         memcpy(pHead, *writeBuffer, length);
         pHead += length
     } else 
-    {   // 写入区间跨国了 bufferEnd
+    {   // 写入区间跨过了 bufferEnd
         int part1 = pBufferEnd - pHead;
         int part2 = length - part1;
         memcpy(*writeBuffer, pHead, part1);
