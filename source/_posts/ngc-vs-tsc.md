@@ -21,6 +21,14 @@ ngc ,全称是 [Angular Template Compiler](https://stackoverflow.com/a/51893626)
 
 这里说 `ngc` 是 `tsc` 的一个 Wrapper, 我的实际测试发现这两个命令编译出来的包大小并不想等等, ngc 会更大一点.
 
+tsc and ngc have different purposes and it's not about selecting one over the other.
+
+tsc is a TypeScript compiler, and you need it to generate JavaScript if your app is written in TypeScript.
+
+ngc is an Angular-specific compiler. It doesn't turn the TypeScript code into JavaScript. It does a "finishing touch" to make your app bundles ready for rendering by the browser. In particular, it turns your components templates into inline JavaScript. If you do a prod build with Ahead of Time (AoT) compilation, the ngc does its part before the bundles are built. In dev mode we use Just-in-Time compilation: the templates are not precompiled, the ngc compiler is included into the bundles, and it compiles the templates after the browser loaded your bundles.
+
+see [Angular: ngc or tsc?](https://stackoverflow.com/a/50111982)
+
 ## ngc 与 ng build
 
 stackoverflow 有人提了这个[问题](https://stackoverflow.com/questions/44642696/whats-the-relationship-and-difference-between-ng-build-and-ngc)
