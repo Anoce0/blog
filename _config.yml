@@ -80,6 +80,6 @@ theme: next
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:ChMrWang/blog.git
+  repo: git@github.com:Anoce0/anoce0.github.io.git
   branch: gh-pages
 
