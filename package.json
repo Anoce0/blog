@@ -22,5 +22,8 @@
     "server": "yarn hexo server --draft",
     "publishs": "yarn hexo publish",
     "deploy": "yarn hexo clean && yarn hexo deploy"
+  },
+  "devDependencies": {
+    "yarn-audit-fix": "^10.0.7"
   }
 }
