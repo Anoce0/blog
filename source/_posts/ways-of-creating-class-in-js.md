@@ -1,5 +1,6 @@
 ---
 title: Javascript 创建对象的几种方式
+date: 2021-05-24 23:08:07
 tags:
     - javascript
     - basic

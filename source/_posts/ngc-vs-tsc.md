@@ -2,6 +2,9 @@
 title: angular 中的 ngc 命令
 date: 2021-06-08 19:21:15
 tags:
+    - javascript
+    - angular
+    - buildtool
 ---
 
 
