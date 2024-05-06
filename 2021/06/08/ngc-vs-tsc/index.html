@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anoce0.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="关于 ngcngc ,全称是 Angular Template Compiler ,来源于包 @angular&#x2F;compiler-cli. ngc 与 tsc它在 angular 官网缺乏相关的文档, 有人在 angular repo 中提了个 issue 来讨论这个问题.同时有个 PR 正在在给 angular 添加 ngc 的 document摘录如下:    While most of th">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular 中的 ngc 命令">
+<meta property="og:url" content="https://anoce0.github.io/2021/06/08/ngc-vs-tsc/index.html">
+<meta property="og:site_name" content="Ocean&#39;s Blog">
+<meta property="og:description" content="关于 ngcngc ,全称是 Angular Template Compiler ,来源于包 @angular&#x2F;compiler-cli. ngc 与 tsc它在 angular 官网缺乏相关的文档, 有人在 angular repo 中提了个 issue 来讨论这个问题.同时有个 PR 正在在给 angular 添加 ngc 的 document摘录如下:    While most of th">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-08T11:21:15.000Z">
+<meta property="article:modified_time" content="2024-05-06T13:05:06.863Z">
+<meta property="article:author" content="Ocean Wang">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="buildtool">
+<meta property="article:tag" content="angular">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anoce0.github.io/2021/06/08/ngc-vs-tsc/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anoce0.github.io/2021/06/08/ngc-vs-tsc/","path":"2021/06/08/ngc-vs-tsc/","title":"angular 中的 ngc 命令"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>angular 中的 ngc 命令 | Ocean's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ocean's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-ngc"><span class="nav-number">1.</span> <span class="nav-text">关于 ngc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ngc-%E4%B8%8E-tsc"><span class="nav-number">2.</span> <span class="nav-text">ngc 与 tsc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ngc-%E4%B8%8E-ng-build"><span class="nav-number">3.</span> <span class="nav-text">ngc 与 ng build</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ocean Wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anoce0.github.io/2021/06/08/ngc-vs-tsc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ocean Wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="angular 中的 ngc 命令 | Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          angular 中的 ngc 命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-08 19:21:15" itemprop="dateCreated datePublished" datetime="2021-06-08T19:21:15+08:00">2021-06-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-05-06 21:05:06" itemprop="dateModified" datetime="2024-05-06T21:05:06+08:00">2024-05-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="关于-ngc"><a href="#关于-ngc" class="headerlink" title="关于 ngc"></a>关于 ngc</h2><p>ngc ,全称是 <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/51893626">Angular Template Compiler</a> ,来源于包 <code>@angular/compiler-cli</code>.</p>
+<h2 id="ngc-与-tsc"><a href="#ngc-与-tsc" class="headerlink" title="ngc 与 tsc"></a>ngc 与 tsc</h2><p>它在 angular 官网缺乏相关的文档, 有人在 angular repo 中提了个 <a target="_blank" rel="noopener" href="https://github.com/angular/angular/issues/29623">issue</a> 来讨论这个问题.<br>同时有个 <a target="_blank" rel="noopener" href="https://github.com/iRealNirmal/angular/commit/748db836c696ab5ac66e1cefb85192740ec8db32?short_path=0a65f1d#diff-0a65f1d37c6a41d9b8c6e91e484e9e58bb815f22e9b3425432c086c1b904eefa">PR</a> 正在在给 angular 添加 <code>ngc</code> 的 document<br>摘录如下:  </p>
+<blockquote>
+<p>While most of the time you interact with the Angular Compiler indirectly using Angular CLI, when debugging certain issues, you might find it useful to invoke the Angular Compiler directly. You can use the ngc command provided by the @angular/compiler-cli npm package to call the compiler from the command line.<br>The ngc command is just a wrapper around TypeScript’s tsc compiler command and is primarily configured via the tsconfig.json configuration options documented in the previous sections.<br>In addition to the configuration file, you can also use tsc command line options to configure ngc.  </p>
+</blockquote>
+<p>这里说 <code>ngc</code> 是 <code>tsc</code> 的一个 Wrapper, 我的实际测试发现这两个命令编译出来的包大小并不想等等, ngc 会更大一点.</p>
+<p>tsc and ngc have different purposes and it’s not about selecting one over the other.</p>
+<p>tsc is a TypeScript compiler, and you need it to generate JavaScript if your app is written in TypeScript.</p>
+<p>ngc is an Angular-specific compiler. It doesn’t turn the TypeScript code into JavaScript. It does a “finishing touch” to make your app bundles ready for rendering by the browser. In particular, it turns your components templates into inline JavaScript. If you do a prod build with Ahead of Time (AoT) compilation, the ngc does its part before the bundles are built. In dev mode we use Just-in-Time compilation: the templates are not precompiled, the ngc compiler is included into the bundles, and it compiles the templates after the browser loaded your bundles.</p>
+<p>see <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/50111982">Angular: ngc or tsc?</a></p>
+<h2 id="ngc-与-ng-build"><a href="#ngc-与-ng-build" class="headerlink" title="ngc 与 ng build"></a>ngc 与 ng build</h2><p>stackoverflow 有人提了这个<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/44642696/whats-the-relationship-and-difference-between-ng-build-and-ngc">问题</a><br>简单解释:<br>Angular 提供了两种编译工具,JIT(Just in Time) and AOT (Ahead of Time compile) .<br><code>ng</code> == JIT<br><code>ngc</code> == AOT</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/buildtool/" rel="tag"># buildtool</a>
+              <a href="/tags/angular/" rel="tag"># angular</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/24/ways-of-creating-class-in-js/" rel="prev" title="Javascript 创建对象的几种方式">
+                  <i class="fa fa-angle-left"></i> Javascript 创建对象的几种方式
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ocean Wang</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

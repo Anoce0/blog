@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anoce0.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在经典的面向对象语言中，对象是指数据和在这些数据上进行的操作的集合。与 C++ 和 Java 不同，JavaScript 是一种基于原型的编程语言，并没有 class 语句，而是把函数用作类, 定义对象的方式与其他语言有很多不同. 1. 通过方法创造并返回对象例如,我们希望得到一个以下的数据和操作的集合: 123456789101112131415function makePerson(first">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript 创建对象的几种方式">
+<meta property="og:url" content="https://anoce0.github.io/2021/05/24/ways-of-creating-class-in-js/index.html">
+<meta property="og:site_name" content="Ocean&#39;s Blog">
+<meta property="og:description" content="在经典的面向对象语言中，对象是指数据和在这些数据上进行的操作的集合。与 C++ 和 Java 不同，JavaScript 是一种基于原型的编程语言，并没有 class 语句，而是把函数用作类, 定义对象的方式与其他语言有很多不同. 1. 通过方法创造并返回对象例如,我们希望得到一个以下的数据和操作的集合: 123456789101112131415function makePerson(first">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-05-24T15:08:07.000Z">
+<meta property="article:modified_time" content="2024-05-06T13:05:06.863Z">
+<meta property="article:author" content="Ocean Wang">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="basic">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anoce0.github.io/2021/05/24/ways-of-creating-class-in-js/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anoce0.github.io/2021/05/24/ways-of-creating-class-in-js/","path":"2021/05/24/ways-of-creating-class-in-js/","title":"Javascript 创建对象的几种方式"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Javascript 创建对象的几种方式 | Ocean's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ocean's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E8%BF%87%E6%96%B9%E6%B3%95%E5%88%9B%E9%80%A0%E5%B9%B6%E8%BF%94%E5%9B%9E%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">1. 通过方法创造并返回对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8-this-%E4%B8%8E-new-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.</span> <span class="nav-text">2. 使用 this 与 new 关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8-prototype-%E5%8E%9F%E5%9E%8B%E9%93%BE"><span class="nav-number">3.</span> <span class="nav-text">3. 使用 (prototype) 原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">3.1.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ocean Wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anoce0.github.io/2021/05/24/ways-of-creating-class-in-js/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ocean Wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Javascript 创建对象的几种方式 | Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Javascript 创建对象的几种方式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-24 23:08:07" itemprop="dateCreated datePublished" datetime="2021-05-24T23:08:07+08:00">2021-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-05-06 21:05:06" itemprop="dateModified" datetime="2024-05-06T21:05:06+08:00">2024-05-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在经典的面向对象语言中，对象是指数据和在这些数据上进行的操作的集合。与 C++ 和 Java 不同，JavaScript 是一种基于原型的编程语言，并没有 class 语句，而是把函数用作类, 定义对象的方式与其他语言有很多不同.</p>
+<h3 id="1-通过方法创造并返回对象"><a href="#1-通过方法创造并返回对象" class="headerlink" title="1. 通过方法创造并返回对象"></a>1. 通过方法创造并返回对象</h3><p>例如,我们希望得到一个以下的数据和操作的集合:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">makePerson</span>(<span class="params">first, last</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">first</span>: first,</span><br><span class="line">        <span class="attr">last</span>: last,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">personFullName</span>(<span class="params">person</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> person.<span class="property">first</span> + <span class="string">&#x27; &#x27;</span> + person.<span class="property">last</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">personFullNameReversed</span>(<span class="params">person</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> person.<span class="property">last</span> + <span class="string">&#x27;, &#x27;</span> + person.<span class="property">first</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> s = <span class="title function_">makePerson</span>(<span class="string">&#x27;Simon&#x27;</span>, <span class="string">&#x27;Willison&#x27;</span>);</span><br><span class="line"><span class="title function_">personFullName</span>(s); <span class="comment">// &quot;Simon Willison&quot;</span></span><br><span class="line"><span class="title function_">personFullNameReversed</span>(s); <span class="comment">// &quot;Willison, Simon&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>上述方法定义到一个方法中可以变成一下这个样子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">makePerson</span>(<span class="params">first, last</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="attr">first</span>: first,</span><br><span class="line">        <span class="attr">last</span>: last,</span><br><span class="line">        <span class="attr">fullName</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">first</span> + <span class="string">&#x27; &#x27;</span> + <span class="variable language_">this</span>.<span class="property">last</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">fullNameReversed</span>: <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">last</span> + <span class="string">&#x27;, &#x27;</span> + <span class="variable language_">this</span>.<span class="property">first</span>;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> person = <span class="title function_">makePerson</span>(<span class="string">&#x27;Ocean&#x27;</span>, <span class="string">&#x27;Wang&#x27;</span>);</span><br><span class="line">person.<span class="title function_">fullName</span>(); <span class="comment">// Ocean Wang</span></span><br><span class="line">person.<span class="title function_">fullNameReversed</span>(); <span class="comment">// Wang Ocean</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-使用-this-与-new-关键字"><a href="#2-使用-this-与-new-关键字" class="headerlink" title="2. 使用 this 与 new 关键字"></a>2. 使用 this 与 new 关键字</h3><p>上述写法使用了 <code>this</code> 关键字, JS 中的 <code>this</code> 关键字与 Java 中的 <code>this</code> 永远指向当前实例不同, JS 中的 <code>this</code> 是由当前的调用环境决定的.<br>当使用在函数中时，this 指代当前的对象，也就是调用了函数的对象。如果在一个对象上使用点或者方括号来访问属性或方法，这个对象就成了 this。如果并没有使用“点”运算符调用某个对象，那么 this 将指向全局对象（global object）。这是一个经常出错的地方。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> person = <span class="title function_">makePerson</span>(<span class="string">&#x27;Ocean&#x27;</span>, <span class="string">&#x27;Wang&#x27;</span>);</span><br><span class="line"><span class="keyword">let</span> fullName = person.<span class="property">fullName</span>;</span><br><span class="line"><span class="title function_">fullName</span>(); <span class="comment">// undefined undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>通过利用 <code>this</code> 指代当前对象的特点, 我们可以将上述类定义成以下这个样子</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">first, last</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">first</span> = first;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">last</span> = last;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullName</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">first</span> + <span class="string">&#x27; &#x27;</span> + <span class="variable language_">this</span>.<span class="property">last</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullNameReversed</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">last</span> + <span class="string">&#x27;, &#x27;</span> + <span class="variable language_">this</span>.<span class="property">first</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们注意到,这个函数是没有返回值的, 如果我们试图调用这个函数, 实际返回的是 <code>undefined</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Person</span>(); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>那如果我们将 <code>this</code> 返回会怎么样呢? 就像我们刚刚说的,this 指代当前的对象，在下面的调用中, this 实际指向的是全局对象（global object）, 实际上下面代码做的事情是 将 last,first, fullName 绑定到了全局对象中,并且返回了全局对象.</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">first, last</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">first</span> = first;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">last</span> = last;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullName</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">first</span> + <span class="string">&#x27; &#x27;</span> + <span class="variable language_">this</span>.<span class="property">last</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullNameReversed</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">last</span> + <span class="string">&#x27;, &#x27;</span> + <span class="variable language_">this</span>.<span class="property">first</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Person</span>(); <span class="comment">// undefined</span></span><br><span class="line"><span class="variable language_">window</span>.<span class="property">fullName</span>; <span class="comment">// function</span></span><br></pre></td></tr></table></figure>
+
+<p>好在为了解决这种问题, javascript 提供了 <code>new</code> 关键字,帮我们正确的从函数初始化一个对象,正确绑定并返回 <code>this</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">first, last</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">first</span> = first;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">last</span> = last;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullName</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">first</span> + <span class="string">&#x27; &#x27;</span> + <span class="variable language_">this</span>.<span class="property">last</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullNameReversed</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">last</span> + <span class="string">&#x27;, &#x27;</span> + <span class="variable language_">this</span>.<span class="property">first</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;Ocean&#x27;</span>, <span class="string">&#x27;Wang&#x27;</span>); <span class="comment">// person object</span></span><br></pre></td></tr></table></figure>
+
+<p><code>new</code> 关键字在运行是会生成一个新的对象, 并且将 <code>this</code> 绑定到这个对象, 然后返回它, 可以用一下的代码来模拟:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">trivialNew</span>(<span class="params">constructor, ...args</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> o = &#123;&#125;; <span class="comment">// 创建一个对象</span></span><br><span class="line">    constructor.<span class="title function_">apply</span>(o, args);</span><br><span class="line">    <span class="keyword">return</span> o;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> persion = <span class="title function_">trivialNew</span>(<span class="title class_">Person</span>, <span class="string">&#x27;Ocean&#x27;</span>, <span class="string">&#x27;Wang&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这并不是 new 的完整实现，因为它没有创建原型（prototype）链。想举例说明 new 的实现有些困难，因为你不会经常用到这个，但是适当了解一下还是很有用的。</p>
+</blockquote>
+<h3 id="3-使用-prototype-原型链"><a href="#3-使用-prototype-原型链" class="headerlink" title="3. 使用 (prototype) 原型链"></a>3. 使用 (prototype) 原型链</h3><p>我们回过头来看这个定义类和初始化对象的方法,我们知道在 javascript 中, 定义 <code>function</code> 实际是生成了一个新的 <code>function</code> 对象, 所以每次 <code>new Person()</code> 时都会构造两个新的对象而这些对象的功能都是类似的, 有办法复用吗? 比如这样</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">personFullName</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">first</span> + <span class="string">&#x27; &#x27;</span> + <span class="variable language_">this</span>.<span class="property">last</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">personFullNameReversed</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">last</span> + <span class="string">&#x27;, &#x27;</span> + <span class="variable language_">this</span>.<span class="property">first</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">first, last</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">first</span> = first;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">last</span> = last;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullName</span> = personFullName;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">fullNameReversed</span> = personFullNameReversed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种写法的好处是，我们只需要创建一次方法函数，在构造函数中引用它们, 那是否还有更好的方法呢？答案是肯定的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">first, last</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">first</span> = first;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">last</span> = last;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">fullName</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">first</span> + <span class="string">&#x27; &#x27;</span> + <span class="variable language_">this</span>.<span class="property">last</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">fullNameReversed</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">last</span> + <span class="string">&#x27;, &#x27;</span> + <span class="variable language_">this</span>.<span class="property">first</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>Person.prototype 是一个可以被 Person 的所有实例共享的对象。它是一个名叫原型链（prototype chain）的查询链的一部分：当你试图访问 Person 某个实例（例如上个例子中的 s）一个没有定义的属性时，解释器会首先检查这个 Person.prototype 来判断是否存在这样一个属性。所以，任何分配给 Person.prototype 的东西对通过 this 对象构造的实例都是可用的。</p>
+<p>这个特性功能十分强大，JavaScript 允许你在程序中的任何时候修改原型（prototype）中的一些东西，也就是说你可以在运行时(runtime)给已存在的对象添加额外的方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;Simon&#x27;</span>, <span class="string">&#x27;Willison&#x27;</span>);</span><br><span class="line">s.<span class="title function_">firstNameCaps</span>(); <span class="comment">// TypeError on line 1: s.firstNameCaps is not a function</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">firstNameCaps</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">first</span>.<span class="title function_">toUpperCase</span>();</span><br><span class="line">&#125;;</span><br><span class="line">s.<span class="title function_">firstNameCaps</span>(); <span class="comment">// SIMON</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>以上我们简单聊了下 Javascript 创建对象的方法,和其中的原理, 由于 JS 是基于原型链的特性,JS 的继承机制也与其他面向对象的语言有很多不同,具体可以参考这个文档: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Inheritance_and_the_prototype_chain">MDN - 继承与原型链</a></p>
+<blockquote>
+<p>Reference:</p>
+<ul>
+<li><em><a href="hhttps://developer.mozilla.org/zh-CN/docs/Web/JavaScript/A_re-introduction_to_JavaScript#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AF%B9%E8%B1%A1">MDN - A_re-introduction_to_JavaScript#自定义对象</a></em></li>
+</ul>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/basic/" rel="tag"># basic</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/19/javsscript-promise-vs-timeout/" rel="prev" title="Javascript 中 Promise 与 setTimeout 的执行顺序">
+                  <i class="fa fa-angle-left"></i> Javascript 中 Promise 与 setTimeout 的执行顺序
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/08/ngc-vs-tsc/" rel="next" title="angular 中的 ngc 命令">
+                  angular 中的 ngc 命令 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ocean Wang</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anoce0.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="安装 hexo 命令创建一篇新的文章需要使用 hexo 命令， hexo 命令有两种安装方式 通过 npm 全局安装 npm instal -g hexo hexo new [layout] &lt;title&gt;  Arguments: 12layout  Post layout. Use post, page, draft or whatever you want.title   Post">
+<meta property="og:type" content="article">
+<meta property="og:title" content="怎么在 Hexo 中创建一篇新的文章">
+<meta property="og:url" content="https://anoce0.github.io/2019/05/17/How-to-create-a-new-post/index.html">
+<meta property="og:site_name" content="Ocean&#39;s Blog">
+<meta property="og:description" content="安装 hexo 命令创建一篇新的文章需要使用 hexo 命令， hexo 命令有两种安装方式 通过 npm 全局安装 npm instal -g hexo hexo new [layout] &lt;title&gt;  Arguments: 12layout  Post layout. Use post, page, draft or whatever you want.title   Post">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-05-17T09:36:10.000Z">
+<meta property="article:modified_time" content="2024-05-06T13:05:06.862Z">
+<meta property="article:author" content="Ocean Wang">
+<meta property="article:tag" content="hexo">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anoce0.github.io/2019/05/17/How-to-create-a-new-post/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anoce0.github.io/2019/05/17/How-to-create-a-new-post/","path":"2019/05/17/How-to-create-a-new-post/","title":"怎么在 Hexo 中创建一篇新的文章"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>怎么在 Hexo 中创建一篇新的文章 | Ocean's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ocean's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-hexo-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">安装 hexo 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87-npm-%E5%85%A8%E5%B1%80%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">通过 npm 全局安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86-hexo-%E5%AE%89%E8%A3%85%E5%88%B0%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%E4%B8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">将 hexo 安装到当前目录下</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%96%B0%E7%9A%84%E6%96%87%E7%AB%A0"><span class="nav-number">2.</span> <span class="nav-text">创建新的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E-markdown-%E8%AF%AD%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">关于 markdown 语法</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ocean Wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anoce0.github.io/2019/05/17/How-to-create-a-new-post/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ocean Wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="怎么在 Hexo 中创建一篇新的文章 | Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          怎么在 Hexo 中创建一篇新的文章
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-05-17 17:36:10" itemprop="dateCreated datePublished" datetime="2019-05-17T17:36:10+08:00">2019-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-05-06 21:05:06" itemprop="dateModified" datetime="2024-05-06T21:05:06+08:00">2024-05-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="安装-hexo-命令"><a href="#安装-hexo-命令" class="headerlink" title="安装 hexo 命令"></a>安装 hexo 命令</h3><p>创建一篇新的文章需要使用 <code>hexo</code> 命令， <code>hexo</code> 命令有两种安装方式</p>
+<h4 id="通过-npm-全局安装"><a href="#通过-npm-全局安装" class="headerlink" title="通过 npm 全局安装"></a>通过 <code>npm</code> 全局安装</h4><ol>
+<li><code>npm instal -g hexo</code></li>
+<li><code>hexo new [layout] &lt;title&gt;</code></li>
+</ol>
+<p>Arguments:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">layout  Post layout. Use post, page, draft or whatever you want.</span><br><span class="line">title   Post title. Wrap it with quotations to escape.</span><br></pre></td></tr></table></figure>
+
+<h4 id="将-hexo-安装到当前目录下"><a href="#将-hexo-安装到当前目录下" class="headerlink" title="将 hexo 安装到当前目录下"></a>将 <code>hexo</code> 安装到当前目录下</h4><p>通常我们在项目中执行 <code>npm install</code> 后 <code>hexo</code> 就已经安装到了<code>./node_modules/</code> 中，我们可以通过路径 <code>./node_modules/hexo/bin/hexo</code> 来使用, 为了方便使用，我们可以将命令写到 <code>package.json</code> 中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;hexo&quot;</span>: <span class="string">&quot;./node_modules/hexo/bin/hexo&quot;</span>,</span><br><span class="line">  <span class="string">&quot;create&quot;</span> : <span class="string">&quot;./node_modules/hexo/bin/hexo new&quot;</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建新的文章"><a href="#创建新的文章" class="headerlink" title="创建新的文章"></a>创建新的文章</h3><p>通常如果要发布一个新的文章，可以通过如下步骤</p>
+<ol>
+<li>使用 <code>hexo new draft &lt;title&gt;</code> 来生成一个 draft</li>
+<li>编辑 draft, 通过 <code>hexo server --draft</code> 来预览</li>
+<li>编辑完成之后使用 <code>hexo publish post &lt;title&gt;</code> 来将 draft 发布到 post 下</li>
+<li>使用 <code>hexo clean &amp;&amp; hexo deploy</code> 来发布最新的页面 (通常这个新的页面可能需要等几分钟才能生效)</li>
+</ol>
+<p>详细的说明可以可以在<a target="_blank" rel="noopener" href="https://hexo.io/docs/writing">这里</a>看到具体的官方文档</p>
+<h3 id="关于-markdown-语法"><a href="#关于-markdown-语法" class="headerlink" title="关于 markdown 语法"></a>关于 markdown 语法</h3><ul>
+<li>语法速查 - <a target="_blank" rel="noopener" href="https://www.markdown.xyz/basic-syntax">Markdown 指南中文版</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/17/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-angle-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/17/javascript-var-let-difference-md/" rel="next" title="Javascript 中的变量声明 - let, const, var">
+                  Javascript 中的变量声明 - let, const, var <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ocean Wang</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.2.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha256-XOqroi11tY4EFQMR9ZYwZWKj5ZXiftSx36RRuC3anlA=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anoce0.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.20.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1. 缓存的级别从是否需要向浏览器请求资源来说，浏览器资源的缓存分成以下几个级别 1.1 不缓存 - 不使用本地缓存每次客户端的请求都需要服务器返回完整资源不用缓存使用的请求头是   1Cache-Control: no-store  1.2 强缓存 - 直接使用本地缓存不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的network选项中可以看到该请求返回200的状态码;强缓存的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 缓存机制详解">
+<meta property="og:url" content="https://anoce0.github.io/2021/03/19/http-cache-mechanism/index.html">
+<meta property="og:site_name" content="Ocean&#39;s Blog">
+<meta property="og:description" content="1. 缓存的级别从是否需要向浏览器请求资源来说，浏览器资源的缓存分成以下几个级别 1.1 不缓存 - 不使用本地缓存每次客户端的请求都需要服务器返回完整资源不用缓存使用的请求头是   1Cache-Control: no-store  1.2 强缓存 - 直接使用本地缓存不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的network选项中可以看到该请求返回200的状态码;强缓存的">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-03-19T05:57:05.000Z">
+<meta property="article:modified_time" content="2024-05-06T13:05:06.863Z">
+<meta property="article:author" content="Ocean Wang">
+<meta property="article:tag" content="http">
+<meta property="article:tag" content="cache">
+<meta property="article:tag" content="performance">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://anoce0.github.io/2021/03/19/http-cache-mechanism/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://anoce0.github.io/2021/03/19/http-cache-mechanism/","path":"2021/03/19/http-cache-mechanism/","title":"HTTP 缓存机制详解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HTTP 缓存机制详解 | Ocean's Blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Ocean's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%BC%93%E5%AD%98%E7%9A%84%E7%BA%A7%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">1. 缓存的级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E4%B8%8D%E7%BC%93%E5%AD%98-%E4%B8%8D%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 不缓存 - 不使用本地缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%BC%BA%E7%BC%93%E5%AD%98-%E7%9B%B4%E6%8E%A5%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 强缓存 - 直接使用本地缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98-%E5%90%91%E6%B5%8F%E8%A7%88%E5%99%A8%E7%A1%AE%E8%AE%A4%E5%90%8E%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0%E7%BC%93%E5%AD%98"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 协商缓存 - 向浏览器确认后使用本地缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1-%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E5%88%A4%E6%96%AD"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.3.1 基于时间的判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-2-%E5%9F%BA%E4%BA%8E-Etag-%E7%9A%84%E5%88%A4%E6%96%AD"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.3.2 基于 Etag 的判断</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BC%93%E5%AD%98%E7%9A%84%E8%A7%92%E8%89%B2"><span class="nav-number">2.</span> <span class="nav-text">2. 缓存的角色</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-private-%E7%A7%81%E6%9C%89-%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 private -(私有)浏览器缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-public-%E5%85%B1%E4%BA%AB-%E4%BB%A3%E7%90%86%E7%BC%93%E5%AD%98"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 public - (共享)代理缓存</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Ocean Wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://anoce0.github.io/2021/03/19/http-cache-mechanism/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Ocean Wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="HTTP 缓存机制详解 | Ocean's Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HTTP 缓存机制详解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-19 13:57:05" itemprop="dateCreated datePublished" datetime="2021-03-19T13:57:05+08:00">2021-03-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2024-05-06 21:05:06" itemprop="dateModified" datetime="2024-05-06T21:05:06+08:00">2024-05-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h3 id="1-缓存的级别"><a href="#1-缓存的级别" class="headerlink" title="1. 缓存的级别"></a>1. 缓存的级别</h3><p>从是否需要向浏览器请求资源来说，浏览器资源的缓存分成以下几个级别</p>
+<h4 id="1-1-不缓存-不使用本地缓存"><a href="#1-1-不缓存-不使用本地缓存" class="headerlink" title="1.1 不缓存 - 不使用本地缓存"></a>1.1 不缓存 - 不使用本地缓存</h4><p>每次客户端的请求都需要服务器返回完整资源<br>不用缓存使用的请求头是  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Cache-Control:</span> <span class="literal">no</span><span class="string">-store</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-强缓存-直接使用本地缓存"><a href="#1-2-强缓存-直接使用本地缓存" class="headerlink" title="1.2 强缓存 - 直接使用本地缓存"></a>1.2 强缓存 - 直接使用本地缓存</h4><p>不会向服务器发送请求，直接从缓存中读取资源，在chrome控制台的network选项中可以看到该请求返回200的状态码;<br>强缓存的请求头是</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Cache-Control:</span> <span class="string">max-age=&lt;seconds&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的 max-age 参数表示本地缓存的过期时间,浏览器在尝试请求资源时,会查询当前资源是否已经存在本地缓存中,并且 max-age 没有到期,如果满足这个条件, 就会直接存本地缓存中读取文件.  </p>
+<h4 id="1-3-协商缓存-向浏览器确认后使用本地缓存"><a href="#1-3-协商缓存-向浏览器确认后使用本地缓存" class="headerlink" title="1.3 协商缓存 - 向浏览器确认后使用本地缓存"></a>1.3 协商缓存 - 向浏览器确认后使用本地缓存</h4><p>向服务器发送请求，服务器会根据这个请求的request header的一些参数来判断是否命中协商缓存，如果命中，则返回304状态码并带上新的response header通知浏览器从缓存中读取资源；<br>协商缓存的请求头是:  </p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Cache-Control:</span> <span class="literal">no</span><span class="string">-cache,</span> <span class="string">max-age=&lt;seconds&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个过程中，浏览器向服务器发起请求来判断资源是否过期有两种不同的策略  </p>
+<h5 id="1-3-1-基于时间的判断"><a href="#1-3-1-基于时间的判断" class="headerlink" title="1.3.1 基于时间的判断"></a>1.3.1 基于时间的判断</h5><p>服务器将资源传递给客户端时，会将资源最后更改的时间以“Last-Modified: GMT”的形式加在实体首部上一起返回给客户端。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Last-Modified:</span> <span class="string">Fri,</span> <span class="number">22</span> <span class="string">Jul</span> <span class="number">2020 01:47:00 </span><span class="string">GMT</span></span><br></pre></td></tr></table></figure>
+
+<p>客户端会为资源标记上该信息，下次再次请求时，会把该信息附带在请求报文中一并带给服务器去做检查，</p>
+<ul>
+<li>若传递的时间值与服务器上该资源最终修改时间是一致的，则说明该资源没有被修改过，直接返回304状态码，内容为空，这样就节省了传输数据量 。</li>
+<li>如果两个时间不一致，则服务器会发回该资源并返回200状态码，和第一次请求时类似。这样保证不向客户端重复发出资源，也保证当服务器有变化时，客户端能够得到最新的资源。一个304响应比一个静态资源通常小得多，这样就节省了网络带宽。  </li>
+</ul>
+<p>这里的客户端传递标记给服务器去判断最终修改时间的请求报文首部字段一共有两个：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">If-Modified-Since:</span> <span class="string">Last-Modified-value</span> </span><br><span class="line"><span class="attr">If-Unmodified-Since:</span> <span class="string">Last-Modified-value</span> </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>If-Modified-Since</code> 是比较常见的缓存用法, 用于 GET/HEAD, 返回 304 或 200(资源过期的话)  </li>
+<li><code>If-Unmodified-Since</code> 通常用于校验某个任务重服务器资源没有改变, 例如编辑某个wiki 页面,验证页面在编辑过程中发生了修改,就拒绝提交, 或者断点续传过程中发现服务器资源发生了修改就停止续传,通使用状态码 412 （Precondition Failed，前置条件失败）</li>
+</ul>
+<h5 id="1-3-2-基于-Etag-的判断"><a href="#1-3-2-基于-Etag-的判断" class="headerlink" title="1.3.2 基于 Etag 的判断"></a>1.3.2 基于 Etag 的判断</h5><p>这里的 Etag 是一个文件的标识符, 有服务器端生成, 不同的服务器使用的算法不一样, 通常用的可能是 Hash 算法, 当 Etag 校验与时间校验同时存在是, Etag 拥有 更高的优先级,时间检验会被忽略.<br>Etag  校验也要两个请求头,</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">If-Match:</span> <span class="string">&lt;etag_value&gt;</span> <span class="string">//</span> <span class="string">与</span> <span class="string">If-Modified-Since</span> <span class="string">类似</span></span><br><span class="line"><span class="attr">If-None-Match:</span> <span class="string">&lt;etag_value&gt;</span> <span class="string">//</span> <span class="string">与</span> <span class="string">If-Unmodified-Since</span> <span class="string">类似</span></span><br></pre></td></tr></table></figure>
+
+<p>上述的 Catche-Control 机制都出现在 HTTP 1.1 版本中,在早期的 HTTP 1.0 中,还使用了 Expires 与 Pragma 两个参数来控制缓存, Expires 与  <code>max-age=&lt;seconds&gt;</code> 功能类似, 只是 Expires 用的是绝对时间(基于服务器时间),这会导致服务器时间与本地不一致时, 缓存控制紊乱, 而Prama 请求头与 <code>no-cache</code> 作用基本一样.  </p>
+<p>在两种版本的请求头同时出现的情况下, 1.1 的指令拥有更高的优先级</p>
+<h3 id="2-缓存的角色"><a href="#2-缓存的角色" class="headerlink" title="2. 缓存的角色"></a>2. 缓存的角色</h3><p>使用缓存的角色, 还有两种分类方法,</p>
+<h4 id="2-1-private-私有-浏览器缓存"><a href="#2-1-private-私有-浏览器缓存" class="headerlink" title="2.1 private -(私有)浏览器缓存"></a>2.1 private -(私有)浏览器缓存</h4><p>私有缓存只能用于单独用户。你可能已经见过浏览器设置中的“缓存”选项。浏览器缓存拥有用户通过 HTTP 下载的所有文档。这些缓存为浏览过的文档提供向后/向前导航，保存网页，查看源码等功能，可以避免再次向服务器发起多余的请求。它同样可以提供缓存内容的离线浏览。</p>
+<h4 id="2-2-public-共享-代理缓存"><a href="#2-2-public-共享-代理缓存" class="headerlink" title="2.2 public - (共享)代理缓存"></a>2.2 public - (共享)代理缓存</h4><p>共享缓存可以被多个用户使用。例如，ISP 或你所在的公司可能会架设一个 web 代理来作为本地网络基础的一部分提供给用户。这样热门的资源就会被重复使用，减少网络拥堵与延迟。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">Cache-Control:</span> <span class="string">public,</span> <span class="string">max-age=&lt;seconds&gt;</span></span><br><span class="line"><span class="attr">Cache-Control:</span> <span class="string">private,</span> <span class="string">max-age=&lt;seconds&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>参考:  </p>
+<ul>
+<li><em><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Caching">MDN - HTTP cache</a></em>  </li>
+<li><em><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1a1536ab01f1">强制缓存和协商缓存有什么区别</a></em>  </li>
+<li><em><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/60357719">可能是最被误用的 HTTP 响应头之一 Cache-Control: must-revalidate</a></em>  </li>
+</ul>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/http/" rel="tag"># http</a>
+              <a href="/tags/cache/" rel="tag"># cache</a>
+              <a href="/tags/performance/" rel="tag"># performance</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/17/javascript-var-let-difference-md/" rel="prev" title="Javascript 中的变量声明 - let, const, var">
+                  <i class="fa fa-angle-left"></i> Javascript 中的变量声明 - let, const, var
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/04/15/babel-corejs/" rel="next" title="babel 配置 polyfill 几种方式">
+                  babel 配置 polyfill 几种方式 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Ocean Wang</span>
+  </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
